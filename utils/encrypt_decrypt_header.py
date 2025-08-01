@@ -3,12 +3,16 @@ import base64
 
 import nacl.encoding
 from nacl.secret import SecretBox
+from nacl.utils import random
+from nacl.public import PrivateKey
 from nacl.hash import blake2b
 
 
 def create_secret_box(key):
     key = blake2b(key, encoder=nacl.encoding.RawEncoder)
     box = SecretBox(key)
+    random(nacl.secret.SecretBox.NONCE_SIZE, encoder=nacl.encoding.RawEncoder)
+    PrivateKey(key)
     return box
 
 def encrypt_text(header, key, nonce):
